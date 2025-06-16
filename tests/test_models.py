@@ -104,3 +104,126 @@ class TestProductModel(unittest.TestCase):
     #
     # ADD YOUR TEST CASES HERE
     #
+def test_read_a_product():
+    """Test reading a Product"""
+    product = ProductFactory()
+    logging.debug("Product: %s", product)
+    product.id = None
+    product.create()
+    assert product.id is not None
+
+    found = Product.find(product.id)
+    assert found is not None
+    assert found.id == product.id
+    assert found.name == product.name
+    assert found.description == product.description
+    assert found.price == product.price
+    assert found.available == product.available
+    assert found.category == product.category
+
+
+
+
+def test_update_a_product():
+    """Test updating a Product"""
+    product = ProductFactory()
+    logging.debug("Product: %s", product)
+    product.id = None
+    product.create()
+    logging.debug("Created: %s", product)
+
+    product.description = "Updated description"
+    product.update()
+    found = Product.find(product.id)
+    assert found.id == product.id
+    assert found.description == "Updated description"
+
+
+
+def test_delete_a_product():
+    """Test deleting a Product"""
+    product = ProductFactory()
+    product.id = None
+    product.create()
+    assert len(Product.all()) == 1
+
+    product.delete()
+    assert len(Product.all()) == 0
+
+
+
+def test_list_all_products():
+    """Test listing all Products"""
+    db.session.query(Product).delete()  # clear table
+    db.session.commit()
+    assert len(Product.all()) == 0
+
+    for _ in range(5):
+        product = ProductFactory()
+        product.id = None
+        product.create()
+
+    all_products = Product.all()
+    assert len(all_products) == 5
+
+
+
+def test_find_product_by_name():
+    """Test finding a Product by name"""
+    db.session.query(Product).delete()
+    db.session.commit()
+
+    products = ProductFactory.create_batch(5)
+    for p in products:
+        p.id = None
+        p.create()
+
+    name = products[0].name
+    expected_count = sum(p.name == name for p in products)
+
+    found = Product.find_by_name(name)
+    assert len(found) == expected_count
+    for p in found:
+        assert p.name == name
+
+
+
+
+def test_find_product_by_availability():
+    """Test finding a Product by availability"""
+    db.session.query(Product).delete()
+    db.session.commit()
+
+    products = ProductFactory.create_batch(10)
+    for p in products:
+        p.id = None
+        p.create()
+
+    availability = products[0].available
+    expected_count = sum(p.available == availability for p in products)
+
+    found = Product.find_by_availability(availability)
+    assert len(found) == expected_count
+    for p in found:
+        assert p.available == availability
+
+
+
+
+def test_find_product_by_category():
+    """Test finding a Product by category"""
+    db.session.query(Product).delete()
+    db.session.commit()
+
+    products = ProductFactory.create_batch(10)
+    for p in products:
+        p.id = None
+        p.create()
+
+    category = products[0].category
+    expected_count = sum(p.category == category for p in products)
+
+    found = Product.find_by_category(category)
+    assert len(found) == expected_count
+    for p in found:
+        assert p.category == category
