@@ -163,20 +163,69 @@ class TestProductRoutes(TestCase):
         response = self.client.post(BASE_URL, data={}, content_type="plain/text")
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
-   def test_get_product(self):
-    """It should Get a single Product"""
-    # Create one product
-    test_product = self._create_products(1)[0]
-    
-    # Make GET request
-    response = self.client.get(f"{BASE_URL}/{test_product.id}")
-    
-    # Check status and content
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    data = response.get_json()
-    self.assertEqual(data["id"], test_product.id)
-    self.assertEqual(data["name"], test_product.name)
-    self.assertEqual(data["category"], test_product.category)
+   def test_get_product(client):
+    product = Product(name="Test", description="Test Product", price=10.0, available=True, category="Test")
+    product.create()
+
+    response = client.get(f"/products/{product.id}")
+    assert response.status_code == status.HTTP_200_OK
+    data = json.loads(response.data)
+    assert data["name"] == product.name
+
+def test_get_product_not_found(client):
+    response = client.get("/products/0")
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+def test_update_product(client):
+    product = Product(name="Old", description="Old Desc", price=5.0, available=False, category="Old")
+    product.create()
+    new_data = {
+        "name": "New",
+        "description": "New Desc",
+        "price": 99.99,
+        "available": True,
+        "category": "New"
+    }
+    response = client.put(f"/products/{product.id}", json=new_data)
+    assert response.status_code == status.HTTP_200_OK
+    data = json.loads(response.data)
+    assert data["name"] == "New"
+
+def test_delete_product(client):
+    product = Product(name="DeleteMe", description="Desc", price=20.0, available=True, category="Misc")
+    product.create()
+    response = client.delete(f"/products/{product.id}")
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+
+def test_list_all_products(client):
+    Product(name="Prod1", description="D1", price=5, available=True, category="C1").create()
+    Product(name="Prod2", description="D2", price=10, available=False, category="C2").create()
+    response = client.get("/products")
+    assert response.status_code == status.HTTP_200_OK
+    data = json.loads(response.data)
+    assert len(data) >= 2
+
+def test_query_product_by_name(client):
+    Product(name="UniqueName", description="Desc", price=15, available=True, category="X").create()
+    response = client.get("/products", query_string={"name": "UniqueName"})
+    assert response.status_code == status.HTTP_200_OK
+    data = json.loads(response.data)
+    assert all(p["name"] == "UniqueName" for p in data)
+
+def test_query_product_by_category(client):
+    Product(name="Prod", description="Desc", price=15, available=True, category="Books").create()
+    response = client.get("/products", query_string={"category": "Books"})
+    assert response.status_code == status.HTTP_200_OK
+    data = json.loads(response.data)
+    assert all(p["category"] == "Books" for p in data)
+
+def test_query_product_by_availability(client):
+    Product(name="AvailableProd", description="Desc", price=15, available=True, category="Gadgets").create()
+    response = client.get("/products", query_string={"available": "true"})
+    assert response.status_code == status.HTTP_200_OK
+    data = json.loads(response.data)
+    assert all(p["available"] == True for p in data)
+
 
 
     ######################################################################
