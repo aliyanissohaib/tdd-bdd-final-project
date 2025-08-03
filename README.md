@@ -1,49 +1,39 @@
-# TDD / BDD Final Project Template
+# 🧪 TDD / BDD Final Project Template
 
-This repository contains the template to be used for the Final Project for the Coursera course **Introduction to TDD/BDD**.
+This repository is a template for the **Final Project** of the [Coursera course: Introduction to TDD/BDD](https://www.coursera.org/). It provides the foundational structure to apply both **Test-Driven Development (TDD)** and **Behavior-Driven Development (BDD)** in a real-world-style project.
 
-## Usage
+## 🚀 Usage Instructions
 
-This repository is to be used as a template to create your own repository in your own GitHub account. No need to Fork it as it has been set up as a Template. This will avoid confusion when making Pull Requests in the future.
+This repo is set up as a **template**. To use it:
 
-From the GitHub **Code** page, press the green **Use this template** button to create your own repository from this template. 
+1. Click the green **"Use this template"** button at the top of this page.
+2. Create your own repository from the template.
+3. Name your new repo: `tdd-bdd-final-project`
+4. Clone your new repo locally and start building!
 
-Name your repo: `tdd-bdd-final-project`.
+> ⚠️ Do **not** fork this repo — using the template feature ensures your project stays separate and clean for future Pull Requests and collaboration.
 
-## Setup
+## 🧰 What's Included
 
-After entering the lab environment you will need to run the `setup.sh` script in the `./bin` folder to install the prerequisite software.
+- Project folder structure designed for TDD/BDD workflows
+- Sample unit and behavior tests (can be customized)
+- `README.md` and setup instructions
+- Placeholder files for feature specs and scenarios
 
-```bash
-bash bin/setup.sh
-```
+## 🔧 Technologies & Tools (Suggested)
 
-Then you must exit the shell and start a new one for the Python virtual environment to be activated.
+- Language: Python / JavaScript / Java (based on your course track)
+- Testing Frameworks: `unittest`, `pytest`, `Jest`, `Mocha`, `Cucumber`, etc.
+- BDD Tooling: `Behave`, `Cucumber`, `pytest-bdd`, or equivalent
 
-```bash
-exit
-```
+## 🧑‍🏫 Learning Goals
 
-## Tasks
+By the end of this project, you should be able to:
 
-In this project you will use good Test Driven Development (TDD) and Behavior Driven Development (BDD) techniques to write TDD test cases, BDD scenarios, and code, updating the following files:
+- Apply TDD to drive your software design
+- Write user stories and executable specifications using BDD
+- Understand the flow from feature to implementation to test
 
-```bash
-tests/test_models.py
-tests/test_routes.py
-service/routes.py
-features/products.feature
-features/steps/load_steps.py
-```
+---
 
-You will be given partial implementations in each of these files to get you started. Use those implementations as examples of the code you should write.
-
-## License
-
-Licensed under the Apache License. See [LICENSE](/LICENSE)
-
-## Author
-
-John Rofrano, Senior Technical Staff Member, DevOps Champion, @ IBM Research
-
-## <h3 align="center"> © IBM Corporation 2023. All rights reserved. <h3/>
+Feel free to customize and expand this template to fit your final project goals. Happy coding and testing!
